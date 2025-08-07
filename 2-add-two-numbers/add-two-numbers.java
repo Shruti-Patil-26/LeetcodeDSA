@@ -10,68 +10,31 @@
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int sum=l1.val+l2.val;
-        int h=sum/10;
-        ListNode solHead=new ListNode(sum%10);
-        ListNode prev=solHead;
-
-        l1=l1.next;
-        l2=l2.next;
-        while(l1!=null && l2!=null)
+        int sum=0,carry=0;
+        ListNode dummy=new ListNode(-1);
+        ListNode cur=dummy;
+        ListNode temp1=l1,temp2=l2;
+        while(temp1!=null|| temp2!=null)
         {
-            sum=l1.val+l2.val+h;
-            h=sum/10;
+            sum=carry;
+            if(temp1!=null)
+                sum+=temp1.val;
+            if(temp2!=null) sum+=temp2.val;
+
             ListNode temp=new ListNode(sum%10);
-            prev.next=temp;
-            prev=temp;
+            cur.next=temp;
+            cur=temp;
 
-            l1=l1.next;
-            l2=l2.next;
+            carry=sum/10;
+            if(temp1!=null)
+                temp1=temp1.next;
+            if(temp2!=null) temp2=temp2.next;
         }
-        if(l1==null && l2==null)
+        if(carry!=0)
         {
-            if(h!=0)
-            {
-                ListNode temp=new ListNode(h);
-                prev.next=temp;
-            }
-            return solHead;
-            
+            ListNode temp=new ListNode(carry);
+            cur.next=temp;
         }
-            
-
-        if(l1==null)
-        {
-            while(l2!=null)
-            {
-                sum=0+l2.val+h;
-                h=sum/10;
-                ListNode temp=new ListNode(sum%10);
-                prev.next=temp;
-                prev=temp;
-
-                l2=l2.next;
-            }
-        }
-        if(l2==null)
-        {
-            while(l1!=null)
-            {
-                sum=l1.val+0+h;
-                h=sum/10;
-                ListNode temp=new ListNode(sum%10);
-                prev.next=temp;
-                prev=temp;
-
-                l1=l1.next;
-                
-            }
-        }
-        if(h!=0)
-        {
-            ListNode temp=new ListNode(h);
-            prev.next=temp;
-        }
-        return solHead;
+        return dummy.next;
     }
 }
